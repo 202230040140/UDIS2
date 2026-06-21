@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+*.pyo
+
+# Model checkpoints (download separately; see Warp/readme.md and Composition/readme.md)
+Warp/model/*.pth
+Composition/model/*.pth
