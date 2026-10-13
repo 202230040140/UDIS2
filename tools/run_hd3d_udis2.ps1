@@ -1,7 +1,7 @@
 ﻿param(
-    [string]$Manifest = "D:\HD3D_Result\_work\manifest.csv",
-    [string]$ResultRoot = "D:\HD3D_Result",
-    [string]$WorkRoot = "D:\HD3D_Result\_work",
+    [string]$Manifest = "D:\HD3D_Dataset_Result\_global_work\_work_root\manifest.csv",
+    [string]$ResultRoot = "D:\HD3D_Dataset_Result",
+    [string]$WorkRoot = "D:\HD3D_Dataset_Result\_work",
     [string]$Python = "C:\Users\22499\.venvs\obj-gsp-sam\Scripts\python.exe",
     [string]$Gpu = "0",
     [string]$Device = "cuda",

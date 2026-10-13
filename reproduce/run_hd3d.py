@@ -1,4 +1,4 @@
-﻿"""Run UDIS++ on HD3D two-view pairs and write D:\\HD3D_Result-style outputs."""
+"""Run UDIS++ on HD3D two-view pairs and write D:\\HD3D_Dataset_Result-style outputs."""
 from __future__ import annotations
 
 import argparse
@@ -139,7 +139,7 @@ def base_row(row: dict[str, str], out_dir: Path, args: argparse.Namespace) -> di
         "alignment_inliers": "",
         "valid_mask_strategy": "",
         "lpips_max_side": args.lpips_max_side,
-        "raw_path": str(out_dir / "raw.png"),
+        "raw_path": str(out_dir / "stitch_result.png"),
         "aligned_path": "",
         "valid_mask_path": "",
         "gt_path": row["gt_path"],
@@ -156,7 +156,7 @@ def cache_hit(out_dir: Path, args: argparse.Namespace) -> bool:
     return (
         not args.force
         and status.get("success")
-        and (out_dir / "raw.png").exists()
+        and (out_dir / "stitch_result.png").exists()
         and (out_dir / "metrics.json").exists()
     )
 
@@ -172,7 +172,7 @@ def process_pair(
     started = time.perf_counter()
     out_dir = result_root / row["scene"] / "pair_{}".format(row["pair_id"]) / METHOD
     out_dir.mkdir(parents=True, exist_ok=True)
-    raw_path = out_dir / "raw.png"
+    raw_path = out_dir / "stitch_result.png"
     metrics_path = out_dir / "metrics.json"
     status_path = out_dir / "method_status.json"
     pair_work = work_root / METHOD / row["pair_name"]

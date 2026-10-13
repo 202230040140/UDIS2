@@ -1,7 +1,7 @@
 # UDIS++ StitchBench General + HD3D Reproduction
 
 Outputs are centralized under `D:\StitchBench_Result\udis2` (StitchBench) and
-`D:\HD3D_Result\<scene>\pair_XX\udis2\` (HD3D), matching the UDIS layout.
+`D:\HD3D_Dataset_Result\<scene>\pair_XX\udis2\` (HD3D), matching the UDIS layout.
 
 ## Environment
 
@@ -25,7 +25,7 @@ powershell -File tools\run_stitchbench_udis2.ps1 -SkipExisting
 powershell -File tools\run_hd3d_udis2.ps1 -SkipExisting
 ```
 
-Logs: `D:\StitchBench_Result\udis2\full_run.log`, `D:\HD3D_Result\_work\udis2_full_run.log`
+Logs: `D:\StitchBench_Result\udis2\full_run.log`, `D:\HD3D_Dataset_Result\_work\udis2_full_run.log`
 
 ## Single pair (debug)
 

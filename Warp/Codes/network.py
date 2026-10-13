@@ -10,11 +10,24 @@ import numpy as np
 import torchvision.models as models
 
 import torchvision.transforms as T
-resize_512 = T.Resize((512,512))
+# Match tensor Resize in the author's PyTorch 1.7 environment.
+resize_512 = T.Resize((512,512), antialias=False)
 
 import grid_res
 grid_h = grid_res.GRID_H
 grid_w = grid_res.GRID_W
+
+MAX_SAFE_CANVAS_PIXELS = 6_000_000
+MAX_SAFE_CANVAS_SIDE = 4096
+
+def _guard_canvas_size(out_height, out_width):
+    height = float(out_height.detach().item()) if torch.is_tensor(out_height) else float(out_height)
+    width = float(out_width.detach().item()) if torch.is_tensor(out_width) else float(out_width)
+    if not np.isfinite([height, width]).all() or height <= 0 or width <= 0:
+        raise RuntimeError(f'Invalid UDIS++ predicted canvas: {width}x{height}')
+    pixels = int(np.ceil(height)) * int(np.ceil(width))
+    if pixels > MAX_SAFE_CANVAS_PIXELS or max(height, width) > MAX_SAFE_CANVAS_SIDE:
+        raise RuntimeError(f'UDIS++ canvas too large before warp allocation: {width}x{height} ({pixels} pixels); not enough memory')
 
 
 # draw mesh on image
@@ -250,6 +263,7 @@ def get_stitched_result(input1_tensor, input2_tensor, rigid_mesh, mesh):
 
     out_width = width_max - width_min
     out_height = height_max - height_min
+    _guard_canvas_size(out_height, out_width)
     print(out_width)
     print(out_height)
 
@@ -321,6 +335,7 @@ def build_output_model(net, input1_tensor, input2_tensor):
 
     out_width = width_max - width_min
     out_height = height_max - height_min
+    _guard_canvas_size(out_height, out_width)
     #print(out_width)
     #print(out_height)
 

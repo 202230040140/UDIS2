@@ -15,7 +15,7 @@ from loss import cal_lp_loss2
 import torchvision.transforms as T
 
 #import PIL
-resize_512 = T.Resize((512,512))
+resize_512 = T.Resize((512,512), antialias=False)
 
 
 def loadSingleData(data_path, img1_name, img2_name):

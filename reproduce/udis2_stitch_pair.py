@@ -19,6 +19,12 @@ def ensure_trailing_sep(path: Path) -> str:
     return text
 
 
+def is_resource_error(exc: BaseException) -> bool:
+    message = str(exc).lower()
+    return any(text in message for text in ('outofmemoryerror', 'out of memory',
+               'not enough memory', 'defaultcpuallocator', 'unable to allocate'))
+
+
 def stage_inputs(left_path: str, right_path: str, work_dir: Path, max_side: int) -> None:
     work_dir.mkdir(parents=True, exist_ok=True)
     for src, name in ((left_path, "input1.jpg"), (right_path, "input2.jpg")):
@@ -88,6 +94,11 @@ def stitch_pair(
     python: str = DEFAULT_PYTHON,
     keep_work: bool = False,
 ) -> Path:
+    # The author's adaptation script silently trains from scratch when warp
+    # weights are absent. That is not pretrained UDIS++ inference.
+    for model_dir in (WARP_CODES.parent / "model", COMPOSE_CODES.parent / "model"):
+        if not any(model_dir.glob("*.pth")):
+            raise FileNotFoundError("Required pretrained checkpoint missing: " + str(model_dir))
     work = Path(work_dir)
     out = Path(out_path)
     sides = []
@@ -116,8 +127,7 @@ def stitch_pair(
             return out
         except RuntimeError as exc:
             last_error = exc
-            msg = str(exc)
-            if "OutOfMemoryError" not in msg and "out of memory" not in msg.lower():
+            if not is_resource_error(exc):
                 raise
     if last_error is not None:
         raise last_error

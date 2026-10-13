@@ -1,6 +1,6 @@
 ﻿param(
-    [string]$Manifest = "D:\StitchBench_Result\_shared\manifest.csv",
-    [string]$OutRoot = "D:\StitchBench_Result\udis2",
+    [string]$Manifest = "D:\StitchBench_Result\manifest.csv",
+    [string]$OutRoot = "D:\StitchBench_Result\_global_work\udis2",
     [string]$Python = "C:\Users\22499\.venvs\obj-gsp-sam\Scripts\python.exe",
     [string]$Gpu = "0",
     [int]$MaxSide = 768,
